@@ -1,0 +1,41 @@
+---
+- hosts: database
+  become: true
+  tasks:
+    - name: install mysql-server
+      apt: name=mysql-server state=present update_cache=yes
+
+    - name: ensure mysql is running
+      service: name=mysql state=started enabled=yes
+    
+    - name: ensure mysql listening on all ports
+      lineinfile: dest=/etc/mysql/mysql.conf.d/mysqld.cnf regexp=^bind-address line="bind-address = 0.0.0.0"
+      notify: restart mysql
+ 
+    - name: mysqldump file copy
+      copy: src=it635/html/dumpforrap.sql dest=/home/ubuntu/mysql.mysql
+
+       
+    - name: resore sccript copy
+      copy: src=it635/html/script dest=/home/ubuntu/script
+
+
+    - name: resore sccript2 copy
+      copy: src=it635/html/script2 dest=/home/ubuntu/script2
+
+
+    - name: script file permission change 777
+      command: chmod +x /home/ubuntu/script
+    - name: script file permission change 777
+      command: chmod +x /home/ubuntu/script2
+    
+  
+    - name: restore database
+      command: /home/ubuntu/script
+  
+
+
+  handlers:
+    - name: restart mysql
+      service: name=mysql state=restarted
+

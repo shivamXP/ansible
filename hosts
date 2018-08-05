@@ -1,0 +1,12 @@
+[app]
+18.218.246.36
+18.222.163.237
+
+[lb]
+18.219.116.236
+
+[database]
+18.217.92.95
+
+[controller]
+127.0.0.1 ansible_connection=local

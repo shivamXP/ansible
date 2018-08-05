@@ -1,0 +1,15 @@
+---
+- hosts: lb
+  become: true
+  tasks:
+    - name: install nginx
+      apt: name=nginx state=present update_cache=yes
+
+    - name: ensure nginx is runnig
+      service: name=nginx state=started enabled=yes
+    - name: copy nginx conf
+      copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+
+    - name: ensure nginx is runnig
+      service: name=nginx state=started enabled=yes
